@@ -19,10 +19,13 @@ public class URLValidatorService {
         if (urlValidator.isValid(url)) {
             try {
                 HttpURLConnection http = (HttpURLConnection)new URL(url).openConnection();
+                http.setConnectTimeout(10000);
                 if (http.getResponseCode() == 200) {
                     return true;
                 }
             } catch (Exception e) { /* return false */ }
+        }else{
+            System.out.println("NO ES VALIDA");
         }
 
         return false;

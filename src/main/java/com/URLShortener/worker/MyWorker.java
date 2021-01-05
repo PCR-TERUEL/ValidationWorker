@@ -19,12 +19,6 @@ public class MyWorker {
     public void receive(String in) {
         System.out.println(" [x] Received '" + in + "'");
 
-        Work w =  new Work(in);
-        System.out.println(w.toString());
-        try {
-            this.rabbitMQPublisherService.send(w.toString());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        new Work(in, rabbitMQPublisherService);
     }
 }
