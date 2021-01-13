@@ -12,13 +12,19 @@ public class Work extends Thread{
     private final String SEPARATOR = "@";
     private final RabbitMQPublisherService rabbitMQPublisherService;
     public Work(String input, RabbitMQPublisherService rabbitMQPublisherService) {
-        String[] values = input.split(SEPARATOR);
-        this.sessionId = values[0];
-        this.url = values[1];
-        this.shortedUrl = values[2];
-        this.isCSV = values[3];
         this.rabbitMQPublisherService = rabbitMQPublisherService;
-        start();
+        System.out.println(input);
+        try {
+            String[] values = input.split(SEPARATOR);
+            this.sessionId = values[0];
+            this.url = values[1];
+            this.shortedUrl = values[2];
+            this.isCSV = values[3];
+
+            start();
+        }catch(Exception e){
+            System.out.println("Fallo en el formato de entrada");
+        }
     }
 
     @Override
