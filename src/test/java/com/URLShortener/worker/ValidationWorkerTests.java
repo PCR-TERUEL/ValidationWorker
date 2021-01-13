@@ -3,6 +3,8 @@ package com.URLShortener.worker;
 import com.URLShortener.worker.services.RabbitMQPublisherService;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -29,33 +31,30 @@ class ValidationWorkerTests {
     private final RabbitMQPublisherService rabbitMQPublisherService;
 
 
-    String resp;
+    static String resp;
 
     ValidationWorkerTests() {
         rabbitMQPublisherService = new RabbitMQPublisherService();
     }
 
 
-    @Before
+    @BeforeEach
     void before(){
         resp = "";
     }
-    @After
-    void after(){
-        resp = "";
-    }
+
     @Test
     void getsAFalseValidationJob() throws InterruptedException {
         this.template.convertAndSend("validation_job", "asdcasdcas@https://falseSite.es@http://localhost:8080/r/9fb3dc42@false");
         Thread.sleep(10000);
-        System.out.println(resp);
+        System.out.println("--" + resp);
         assert(resp.equals("asdcasdcas@http://localhost:8080/r/9fb3dc42@false@https://falseSite.es@false"));
     }
 
     @Test
     void getsATrueValidationJob() throws InterruptedException {
         this.template.convertAndSend("validation_job", "asdcasdcas@https://www.google.com@http://localhost:8080/r/9fb3dc42@false");
-        Thread.sleep(1000);
+        Thread.sleep(10000);
         System.out.println(resp);
         assertEquals(resp, "asdcasdcas@http://localhost:8080/r/9fb3dc42@true@https://www.google.com@false");
     }
